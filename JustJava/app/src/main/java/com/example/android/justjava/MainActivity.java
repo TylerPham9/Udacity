@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
 import java.text.NumberFormat;
 /**
  * This app displays an order form to order coffee.
@@ -16,7 +19,7 @@ import java.text.NumberFormat;
 public class MainActivity extends AppCompatActivity {
 
     int quantity = 0;
-
+    int price = 5;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +30,10 @@ public class MainActivity extends AppCompatActivity {
      * This method is called when the order button is clicked.
      */
     public void submitOrder(View view) {
-        displayPrice(quantity*5);
+        String priceMessage = "Total $" + quantity*price;
+        priceMessage = priceMessage + "\nThank you!";
+        displayMessage(priceMessage);
+
     }
 
     public void increment(View view) {
@@ -55,4 +61,9 @@ public class MainActivity extends AppCompatActivity {
         TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
         priceTextView.setText(NumberFormat.getCurrencyInstance().format(number));
     }
+    private void displayMessage(String message){
+        TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
+        priceTextView.setText(message);
+    }
+
 }
