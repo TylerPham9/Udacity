@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -23,8 +24,10 @@ import static android.R.id.edit;
  */
 public class MainActivity extends AppCompatActivity {
 
-    int quantity = 0;
-    int price = 5;
+    int quantity = 1;
+    int basePrice = 5;
+    int chocolatePrice = 2;
+    int whippedCreamPrice = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,11 +53,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void increment(View view) {
+        if (quantity == 100) {
+            Toast.makeText(this, "You cannot have more than 100 coffees", Toast.LENGTH_SHORT).show();
+            return;
+        }
         quantity = quantity + 1;
         displayQuantity(quantity);
     }
 
     public void decrement(View view) {
+        if (quantity == 1 ){
+            Toast.makeText(this, "You cannot have less than 1 coffee", Toast.LENGTH_SHORT).show();
+            return;
+        }
         quantity = quantity - 1;
         displayQuantity(quantity);
     }
@@ -75,16 +86,24 @@ public class MainActivity extends AppCompatActivity {
         priceTextView.setText(message);
     }
 
-    private int calculatePrice(int quantity, int pricePerCup){
+    private int calculatePrice(int quantity, int pricePerCup, boolean addWhippedCream, boolean addChocolate){
+        if (addWhippedCream) {
+            pricePerCup += whippedCreamPrice;
+        }
+        if (addChocolate){
+            pricePerCup += chocolatePrice;
+        }
         int price = quantity*pricePerCup;
         return price;
     }
     private String createOrderSummary(String name, boolean addWhippedCream, boolean addChocolate){
+
+
         String priceMessage = "Name: " + name;
         priceMessage += "\nAdd Whipped Cream? " + addWhippedCream;
         priceMessage += "\nAdd Chocolate? " + addChocolate;
         priceMessage += "\nQuantity: " + quantity;
-        priceMessage += "\nTotal: $" + calculatePrice(quantity, price);
+        priceMessage += "\nTotal: $" + calculatePrice(quantity, basePrice, addWhippedCream, addChocolate);
         priceMessage += "\nThank you!";
         return priceMessage;
     }
