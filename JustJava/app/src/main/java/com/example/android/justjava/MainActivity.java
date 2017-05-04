@@ -5,6 +5,8 @@
  * package com.example.android.justjava; 
  */
 package com.example.android.justjava;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -17,6 +19,7 @@ import org.w3c.dom.Text;
 
 import java.text.NumberFormat;
 
+import static android.R.attr.name;
 import static android.R.id.edit;
 
 /**
@@ -49,7 +52,15 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        displayMessage(createOrderSummary(name, hasWhippedCream, hasChocolate));
+        String priceMessage = createOrderSummary(name, hasWhippedCream, hasChocolate);
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:"));
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Just Java order for " + name);
+        intent.putExtra(Intent.EXTRA_TEXT, priceMessage);
+        if (intent.resolveActivity(getPackageManager()) != null){
+            startActivity(intent);
+        }
+
     }
 
     public void increment(View view) {
